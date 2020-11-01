@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display:flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 144pt;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="container"></h1>
+
+    <script>
+        var importObject = {
+            imports: {}
+        };
+
+        fetch('/target/wasm32-unknown-unknown/debug/rust_wasm.wasm').then(response =>
+            response.arrayBuffer()
+        ).then(bytes => WebAssembly.instantiate(bytes, importObject)).then(results => {
+            instance = results.instance;
+            document.getElementById("container").textContent = instance.exports.sum(4,7);
+        }).catch(console.error);
+    </script>
+    
+</body>
+</html>
